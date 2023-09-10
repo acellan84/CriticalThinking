@@ -1,9 +1,10 @@
-package criticalthinkingwktwo;
+package criticalthinkingwkthree;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,94 +12,100 @@ import java.util.Date;
 import java.util.Random;
 
 public class Menu {
-	   private JFrame frame;
-	    private JTextArea textArea;
-	    private Color backgroundColor;
+    private JFrame frame;
+    private JTextArea textBox;
+    private SimpleDateFormat dateFormat;
 
-	    public MenuDemo() {
-	        frame = new JFrame("Menu Demo");
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        frame.setSize(400, 300);
-	        frame.setLayout(new BorderLayout());
+    public Menu() {
+        frame = new JFrame("User Interface");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 200);
+        frame.setLayout(new BorderLayout());
 
-	        JMenuBar menuBar = new JMenuBar();
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        frame.add(buttonPanel, BorderLayout.NORTH);
 
-	        JMenu fileMenu = new JMenu("File");
-	        JMenuItem showDateTimeItem = new JMenuItem("Show Date/Time");
-	        JMenuItem saveToFileItem = new JMenuItem("Save to File");
-	        JMenuItem changeBackgroundColorItem = new JMenuItem("Change Background Color");
-	        JMenuItem exitItem = new JMenuItem("Exit");
+        JButton showDateTimeButton = new JButton("Date/Time Stamp");
+        buttonPanel.add(showDateTimeButton);
 
-	        fileMenu.add(showDateTimeItem);
-	        fileMenu.add(saveToFileItem);
-	        fileMenu.add(changeBackgroundColorItem);
-	        fileMenu.add(exitItem);
+        JButton changeBackgroundColorButton = new JButton("Change Color");
+        buttonPanel.add(changeBackgroundColorButton);
 
-	        menuBar.add(fileMenu);
-	        frame.setJMenuBar(menuBar);
+        JButton saveToFileButton = new JButton("Save to a log.txt");
+        buttonPanel.add(saveToFileButton);
 
-	        textArea = new JTextArea();
-	        frame.add(new JScrollPane(textArea), BorderLayout.CENTER);
+        JButton exitButton = new JButton("Exit");
+        buttonPanel.add(exitButton);
 
-	        showDateTimeItem.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                showDateTime();
-	            }
-	        });
+        textBox = new JTextArea();
+        frame.add(new JScrollPane(textBox), BorderLayout.CENTER);
 
-	        saveToFileItem.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                saveToFile();
-	            }
-	        });
+        dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 
-	        changeBackgroundColorItem.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                changeBackgroundColor();
-	            }
-	        });
+        showDateTimeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showDateTime();
+            }
+        });
 
-	        exitItem.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                System.exit(0);
-	            }
-	        });
+        changeBackgroundColorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeBackgroundColor();
+            }
+        });
 
-	        frame.setVisible(true);
-	    }
+        saveToFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveToFile();
+            }
+        });
 
-	    private void showDateTime() {
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        String dateTime = sdf.format(new Date());
-	        textArea.setText(dateTime);
-	    }
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
-	    private void saveToFile() {
-	        try (FileWriter writer = new FileWriter("log.txt")) {
-	            writer.write(textArea.getText());
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
+        frame.setVisible(true);
+    }
 
-	    private void changeBackgroundColor() {
-	        Random random = new Random();
-	        float hue = random.nextFloat();
-	        backgroundColor = Color.getHSBColor(hue, 1, 1);
-	        textArea.setBackground(backgroundColor);
-	    }
+    private void showDateTime() {
+        String dateTime = dateFormat.format(new Date());
+        textBox.setText("Current Date and Time: " + dateTime);
+    }
 
-	    public static void main(String[] args) {
-	        SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	                new Menu();
-	            }
-	        });
-	    }
-	}
+    private void saveToFile() {
+        try {
+            String textToSave = textBox.getText();
+            File file = new File("log.txt");
+            FileWriter writer = new FileWriter(file);
+            writer.write(textToSave);
+            writer.close();
+            JOptionPane.showMessageDialog(frame, "Text saved to log.txt.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void changeBackgroundColor() {
+        Random random = new Random();
+        float hue = 0.25f + random.nextFloat() * 0.15f; // Generate random green hue (0.25 to 0.40)
+        float saturation = 0.8f;
+        float brightness = 0.9f;
+        Color backgroundColor = Color.getHSBColor(hue, saturation, brightness);
+        textBox.setBackground(backgroundColor);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Menu();
+            }
+        });
+    }
+}
