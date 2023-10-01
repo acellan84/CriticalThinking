@@ -16,7 +16,7 @@ public class RecursiveFiveNumber {
         int total = calculateSum(num, 0, 4);
 
         // Display the result in a dialog box
-        JOptionPane.showMessageDialog(null, "Sum of 5 numbers is: " + total);
+        JOptionPane.showMessageDialog(null, "Total of 5 numbers is: " + total);
     }
 
     public static int calculateSum(int[] num, int firstNum, int lastNum) {
