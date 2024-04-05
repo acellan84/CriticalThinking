@@ -1,0 +1,12 @@
+Name: Alex
+Address: 6321 Main St
+GPA: 3.9
+Name: Amanda
+Address: 5413 Cobble Stone
+GPA: 3.0
+Name: Autumn
+Address: 9541 Twain St
+GPA: 4.0
+Name: Steve
+Address: 1211 Yale Ave
+GPA: 3.5
